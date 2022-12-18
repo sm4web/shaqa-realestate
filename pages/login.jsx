@@ -25,7 +25,7 @@ const login = () => {
   };
 
   return (
-    <div className="w-full h-full bg-white">
+    <div className="w-full h-screen bg-white">
       <Head>
         <title>Shaqa - Login</title>
         <link rel="icon" href="/favicon.ico" />

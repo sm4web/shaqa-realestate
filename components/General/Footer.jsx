@@ -11,7 +11,7 @@ const Links = [
 
 const Footer = () => {
   return (
-    <div className="w-full container border-t-2 py-12 border-[#DEDFE1] static mt-[240px] bottom-0 ">
+    <div className="w-full container border-t-2 py-12 border-[#DEDFE1] relative">
       <div className="px-[15%] flex flex-col lg:flex-row gap-[32px] items-center justify-between">
         <Image src={require("../../assets/images/logo-dark.png")} width={120} />
         <ul className={"flex flex-col lg:flex-row items-center gap-[32px]"}>
