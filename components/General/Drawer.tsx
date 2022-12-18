@@ -95,18 +95,18 @@ const SideNav = () => {
   const { classes, cx } = useStyles();
   const dispatch = useDispatch();
   const router = useRouter();
-  const opened = useSelector((state) => state.drawer.opened);
+  const opened = useSelector((state: any) => state.drawer.opened);
 
   const onSignOut = () => {
-    dispatch(logout());
-    dispatch(toggleDrawer());
+    dispatch(logout(0));
+    dispatch(toggleDrawer(0));
   };
 
   const links = mockdata.map((link, index) => (
     <Box
       onClick={() => {
         setActive(index);
-        dispatch(toggleDrawer());
+        dispatch(toggleDrawer(0));
         router.push({
           pathname: link.href,
         });
@@ -142,7 +142,7 @@ const SideNav = () => {
       aria-describedby="drawer-body"
       closeButtonLabel="Close drawer"
       onClose={() => {
-        dispatch(toggleDrawer());
+        dispatch(toggleDrawer(0));
       }}
     >
       <Navbar className={classes.navbar}>
