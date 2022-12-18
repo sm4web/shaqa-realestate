@@ -40,6 +40,14 @@ const NonAuthNav = () => {
             "https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4"
           }
           alt={"User Profile Picture"}
+          onClick={() => {
+            router.push({
+              pathname: "/settings",
+              query: {
+                setting: "profile",
+              },
+            });
+          }}
         />
       </div>
     </div>
