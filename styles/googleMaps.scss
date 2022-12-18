@@ -1,0 +1,23 @@
+.map-container {
+  width: 100%;
+  height: 370px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.combobox-input {
+  width: 100%;
+  height: 60px;
+  border: none;
+  font-size: 16px;
+  padding: 0 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+
+  &:focus,
+  &:active {
+    border: none;
+    outline: none;
+  }
+}

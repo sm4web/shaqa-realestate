@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .mainColor {
+    @apply text-[#2C4CC9];
+  }
+
+  .animate {
+    @apply transition-all ease-in duration-75;
+  }
+
+  .fade {
+    @apply opacity-50;
+  }
+
+  .mainBTN {
+    @apply stockShadow p-4 rounded-lg bg-main text-white;
+  }
+  .stockShadow {
+    @apply shadow-lg shadow-main/10 hover:shadow-main/20;
+  }
+
+  .mainInput {
+    @apply mainBorder stockShadow max-w-[520px] w-full h-[60px] p-4 rounded-lg bg-white;
+  }
+
+  .mainBorder {
+    @apply border-2 border-main/10;
+  }
+
+  .container {
+    @apply max-w-[95%] lg:max-w-[90%] xl:max-w-[85%] m-auto;
+  }
+}
+
+select {
+  overflow: hidden;
+  overflow: -moz-hidden-unscrollable;
+  background: url("../assets/icons/Arrow\ -\ Down\ 3.svg") no-repeat right white;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
