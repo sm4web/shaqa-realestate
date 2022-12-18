@@ -86,7 +86,7 @@ const mockdata = [
   { icon: Home2, label: "Home", href: "/" },
   { icon: Heart, label: "Favorites", href: "/favorites" },
   { icon: Ad, label: "My Ads", href: "/my-ads" },
-  { icon: Settings, label: "Settings", href: "/settings" },
+  { icon: Settings, label: "Settings", href: "/settings?setting=profile" },
 ];
 
 const SideNav = () => {
