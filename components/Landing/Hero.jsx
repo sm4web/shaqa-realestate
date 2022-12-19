@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
 const HeroSearchItem = ({ title, placeholder }) => (
@@ -13,12 +14,20 @@ const HeroSearchItem = ({ title, placeholder }) => (
 );
 
 const Hero = () => {
+  const router = useRouter();
   return (
     <section
-      id="service"
+      id="services"
       className="w-full flex justify-between items-start container h-screen lg:max-h-[950px]"
     >
-      <div className="flex-1 relative mt-16 z-50 lg:mt-[200px]">
+      <div
+        className="flex-1 relative mt-16 z-50 lg:mt-[200px] cursor-pointer"
+        onClick={() =>
+          router.push({
+            pathname: "/",
+          })
+        }
+      >
         <h1 className="text-[52px] leading-[160%] text-white lg:text-secondary z-50 lg:text-[68px] xl:text-[80px] font-extrabold capitalize ">
           Find your next perfect place to live
         </h1>
@@ -41,12 +50,14 @@ const Hero = () => {
         <Image
           src={require("../../assets/images/landingHero.png")}
           className={"w-full h-full object-cover"}
+          alt={"Property"}
         />
       </div>
       <div className="flex-1 h-full hidden lg:block">
         <Image
           src={require("../../assets/images/landingHero.png")}
           className={"h-full object-cover"}
+          alt={"Property"}
         />
       </div>
     </section>
