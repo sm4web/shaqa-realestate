@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu2 as MenuIcon } from "tabler-icons-react";
 import { toggleDrawer } from "../../features/drawer/drawerSlice";
@@ -15,14 +15,15 @@ const Links = [
   { name: "Contact Us", href: "/landing/#contact" },
 ];
 
-const NonAuthNav = () => {
+const NonAuthNav = ({ light }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const [scrolling, setScrolling] = useState(false);
 
   const AuthedSection = ({ userImage }) => (
     <div className="hidden xl:flex items-center gap-[24px] xl:gap-[32px]">
-      <div>
+      {/* <div>
         <Image
           className={"cursor-pointer"}
           alt="Chat Icon"
@@ -30,11 +31,11 @@ const NonAuthNav = () => {
           width={32}
           height={32}
         />
-      </div>
+      </div> */}
       <div>
         <Avatar
           radius={"xl"}
-          size={32}
+          size={66}
           className={"cursor-pointer"}
           src={
             "https://avatars.githubusercontent.com/u/10353856?s=460&u=88394dfd67727327c1f7670a1764dc38a8a24831&v=4"
@@ -60,7 +61,9 @@ const NonAuthNav = () => {
           return (
             <li
               key={name}
-              className={"text-[14px] md:text-[18px] hover:fade animate"}
+              className={`${
+                light ? "text-main" : "text-white"
+              } text-[14px] md:text-[18px] hover:fade animate`}
             >
               <Link href={href}>{name}</Link>
             </li>
@@ -69,7 +72,9 @@ const NonAuthNav = () => {
       </ul>
       <div className="ml-[120px] flex items-center gap-[32px]">
         <a
-          className="text-white hover:fade text-[18px] animate cursor-pointer"
+          className={`${
+            light ? "text-main" : "text-white"
+          } hover:fade text-[18px] animate cursor-pointer`}
           onClick={() => {
             router.push({
               pathname: "/login",
@@ -79,7 +84,10 @@ const NonAuthNav = () => {
           Login
         </a>
         <a
-          className="mainColor bg-white rounded-full py-4 px-8 hover:bg-main hover:text-white animate cursor-pointer"
+          className={`
+          ${light ? "bg-main" : "bg-white"}
+          ${light ? "text-white" : "text-main"}
+          rounded-full py-4 px-8 active:fade animate cursor-pointer`}
           onClick={() => {
             router.push({
               pathname: "/register",
@@ -93,12 +101,19 @@ const NonAuthNav = () => {
   );
 
   return (
-    <div className="flex fixed w-full z-50 items-center justify-between py-4 px-4 md:py-[12px] md:px-[120px] bg-[#0B0E16] text-white">
+    <div
+      className={`flex ${
+        scrolling ? "fixed" : "relative"
+      } w-full z-50 items-center justify-between animate duration-700 ease-in-out py-4 px-4 md:py-[12px] md:px-[120px] shadow-lg shadow-[rgba(0,0,0,0.1)] ${
+        light ? "bg-white" : "bg-secondary"
+      } text-white`}
+    >
       <div className="flex items-center gap-[24px]">
         <MenuIcon
           size={32}
           className={"cursor-pointer"}
           onClick={() => dispatch(toggleDrawer())}
+          color={light ? "black" : "white"}
         />
         <Image
           onClick={() =>
@@ -106,7 +121,9 @@ const NonAuthNav = () => {
               pathname: "/",
             })
           }
-          src={require("../../assets/images/logo.png")}
+          src={require(light
+            ? "../../assets/images/logo-dark.png"
+            : "../../assets/images/logo.png")}
           className={
             "max-w-[80px] cursor-pointer md:max-w-[100px] hover:scale-110 animate duration-300 ease-out"
           }

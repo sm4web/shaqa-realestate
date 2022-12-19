@@ -42,3 +42,7 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
+
+html {
+  scroll-behavior: smooth;
+}

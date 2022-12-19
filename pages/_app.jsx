@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }) {
       <PersistGate persistor={persistor} loading={null}>
         <div className="flex flex-col min-h-screen h-screen">
           <NonAuthNav />
-          <div className="flex-1 mt-[64px] xl:mt-[62px] pb-12">
+          <div className="flex-1 pb-12">
             <Component {...pageProps} />
             <SideNav />
           </div>
