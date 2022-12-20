@@ -5,7 +5,14 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { Alert } from "@mui/material";
 
-export default function SimpleSnackbar({ text }) {
+export default function SimpleSnackbar({
+  text,
+  place = {
+    vertical: "top",
+    horizontal: "center",
+  },
+  error,
+}) {
   const [open, setOpen] = React.useState(true);
 
   const handleClose = (event, reason) => {
@@ -32,15 +39,16 @@ export default function SimpleSnackbar({ text }) {
   return (
     <div>
       <Snackbar
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
+        anchorOrigin={place}
         open={open}
         onClose={handleClose}
         action={action}
       >
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleClose}
+          severity={error ? "error" : "success"}
+          sx={{ width: "100%" }}
+        >
           {text}
         </Alert>
       </Snackbar>

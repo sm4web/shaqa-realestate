@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const withAuth = (Component) => {
   const Auth = (props) => {
-    const { user } = useSelector((state) => state.auth);
+    const { user } = useSelector((state) => state.auth.data);
     const router = useRouter();
     useEffect(() => {
       if (!user)

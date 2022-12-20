@@ -86,7 +86,7 @@ const mockdata = [
   { icon: Home2, label: "Home", href: "/" },
   { icon: Heart, label: "Favorites", href: "/favorites" },
   { icon: Ad, label: "My Ads", href: "/my-ads" },
-  { icon: Settings, label: "Settings", href: "/settings?setting=profile" },
+  { icon: Settings, label: "Settings", href: "/settings", q: "profile" },
 ];
 
 const SideNav = () => {
@@ -109,6 +109,11 @@ const SideNav = () => {
         dispatch(toggleDrawer(0));
         router.push({
           pathname: link.href,
+          query: link.q
+            ? {
+                setting: link.q,
+              }
+            : {},
         });
       }}
       display={"flex"}

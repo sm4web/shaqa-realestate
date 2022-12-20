@@ -1,12 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu2 as MenuIcon } from "tabler-icons-react";
 import { toggleDrawer } from "../../features/drawer/drawerSlice";
 import { Avatar } from "@mantine/core";
-import MyImage from "../../assets/images/IMG_7548.jpg";
+
 const Links = [
   { name: "Home", href: "/landing" },
   { name: "Service", href: "/landing/#services" },
@@ -17,10 +17,9 @@ const Links = [
 const NonAuthNav = ({ light }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
-  const [scrolling, setScrolling] = useState(false);
+  const { user } = useSelector((state) => state.auth.data);
 
-  const AuthedSection = ({ userImage }) => (
+  const AuthedSection = ({ photoURL }) => (
     <div className="hidden xl:flex items-center gap-[24px] xl:gap-[32px]">
       {/* <div>
         <Image
@@ -36,7 +35,6 @@ const NonAuthNav = ({ light }) => {
           radius={"xl"}
           size={66}
           className={"cursor-pointer"}
-          src={MyImage}
           alt={"User Profile Picture"}
           onClick={() => {
             router.push({
@@ -47,7 +45,7 @@ const NonAuthNav = ({ light }) => {
             });
           }}
         >
-          <Image src={MyImage} />
+          <Image src={photoURL} width={66} height={66} />
         </Avatar>
       </div>
     </div>
@@ -101,9 +99,7 @@ const NonAuthNav = ({ light }) => {
 
   return (
     <div
-      className={`flex ${
-        scrolling ? "fixed" : "relative"
-      } w-full z-50 items-center justify-between animate duration-700 ease-in-out py-4 px-4 md:py-[12px] md:px-[120px] shadow-lg shadow-[rgba(0,0,0,0.1)] ${
+      className={`flex relative w-full z-50 items-center justify-between animate duration-700 ease-in-out py-4 px-4 md:py-[12px] md:px-[120px] shadow-lg shadow-[rgba(0,0,0,0.1)] ${
         light ? "bg-white" : "bg-secondary"
       } text-white`}
     >
@@ -129,7 +125,7 @@ const NonAuthNav = ({ light }) => {
           alt={"Shaqa Realestate logo"}
         />
       </div>
-      {user ? <AuthedSection /> : <NonAuthSection />}
+      {user ? <AuthedSection photoURL={user?.photoURL} /> : <NonAuthSection />}
     </div>
   );
 };
