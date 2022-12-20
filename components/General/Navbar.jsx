@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Menu2 as MenuIcon } from "tabler-icons-react";
 import { toggleDrawer } from "../../features/drawer/drawerSlice";
 import { Avatar } from "@mantine/core";
+import { images } from "../../constants";
 
 const Links = [
   { name: "Home", href: "/landing" },
@@ -21,7 +22,7 @@ const NonAuthNav = ({ light }) => {
 
   const AuthedSection = ({ photoURL }) => (
     <div className="hidden xl:flex items-center gap-[24px] xl:gap-[32px]">
-      {/* <div>
+      <div>
         <Image
           className={"cursor-pointer"}
           alt="Chat Icon"
@@ -29,13 +30,16 @@ const NonAuthNav = ({ light }) => {
           width={32}
           height={32}
         />
-      </div> */}
+      </div>
       <div>
-        <Avatar
-          radius={"xl"}
-          size={66}
-          className={"cursor-pointer"}
-          alt={"User Profile Picture"}
+        <Image
+          src={photoURL}
+          className={
+            "cursor-pointer border-2 border-white object-cover w-[72px] h-[72px] rounded-full"
+          }
+          alt={"profile"}
+          width={60}
+          height={60}
           onClick={() => {
             router.push({
               pathname: "/settings",
@@ -44,9 +48,7 @@ const NonAuthNav = ({ light }) => {
               },
             });
           }}
-        >
-          <Image src={photoURL} width={66} height={66} />
-        </Avatar>
+        />
       </div>
     </div>
   );

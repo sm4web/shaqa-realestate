@@ -6,6 +6,7 @@ import Image from "next/image";
 const UploadPicture = ({ name }) => {
   const formikProps = useFormikContext();
   const ref = useRef();
+  const formValue = formikProps.values[name];
 
   const handleChange = () => {
     ref.current.click();
@@ -22,9 +23,7 @@ const UploadPicture = ({ name }) => {
   return (
     <div
       className="text-center animate hover:fade cursor-pointer mb-4"
-      onClick={
-        formikProps.values[name] ? handleRemoveImageLocally : handleChange
-      }
+      onClick={formValue ? handleRemoveImageLocally : handleChange}
     >
       <input
         type="file"
@@ -37,17 +36,19 @@ const UploadPicture = ({ name }) => {
         width={160}
         height={160}
         src={
-          formikProps.values[name]
-            ? URL.createObjectURL(formikProps.values[name])
+          typeof formValue === "string"
+            ? formValue
+            : formValue
+            ? URL.createObjectURL(
+                new Blob([formValue], { type: "image/png+xml" })
+              )
             : UploadPic
         }
         className={"w-[160px] h-[160px] m-auto rounded-full object-cover"}
         alt="User profile"
       />
       <h1 className="text-sm mainColor">
-        {formikProps.values[name]
-          ? "Remove profile picture"
-          : "Upload profile picture"}
+        {formValue ? "Remove profile picture" : "Upload profile picture"}
       </h1>
     </div>
   );

@@ -16,7 +16,7 @@ export const userGoogleAuth = createAsyncThunk("auth/login", async (router) => {
 
   return signInWithPopup(auth, provider)
     .then((result) => {
-      const { displayName, accessToken, photoURL, email, uid } = result.user;
+      const user = result.user;
 
       // When successfully fetch the user data will redirect to home page
       router.push({
@@ -25,8 +25,8 @@ export const userGoogleAuth = createAsyncThunk("auth/login", async (router) => {
 
       // return user data to the reducer
       return {
-        user: { displayName, photoURL, email, uid },
-        token: accessToken,
+        user,
+        token: user.accessToken,
         error: null,
       };
     })

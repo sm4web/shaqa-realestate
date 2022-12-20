@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import SideImage from "../assets/images/signin-side.svg";
 import { Formik, Form } from "formik";
 import InputHandler from "../components/General/InputHandler";

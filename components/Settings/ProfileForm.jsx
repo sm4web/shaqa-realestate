@@ -8,27 +8,35 @@ import { useDispatch } from "react-redux";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import Image from "next/image";
 
-function ProfileForm(props) {
+function ProfileForm({ userData }) {
+  const dispatch = useDispatch();
   const [country, setCountry] = useState("");
   const [govern, setGovern] = useState("");
-  const dispatch = useDispatch();
-
   //   const onSubmit = (data) => {
   //     dispatch(updateProfile({ id: profile_id, setData, data }));
   //   };
+  if (!userData) return null;
 
+  const { displayName, email, photoURL } = userData;
   return (
     <div className="w-full p-2">
-      <Formik initialValues={{ name: "Saif Mohamed" }}>
+      <Formik
+        initialValues={{
+          displayName,
+          photoURL,
+          email,
+        }}
+        onSubmit={(val) => console.log(val)}
+      >
         {({ values }) => (
           <Form style={{ height: "100%" }}>
             <div className="flex items-start lg:items-center justify-start gap-[20px] flex-col lg:flex-row">
               <div className="min-w-[200px]">
-                <UploadPicture name={"profile_photo"} />
+                <UploadPicture name={"photoURL"} />
               </div>
               <div className="flex w-full items-center max-w-[600px] relative">
                 <InputHandler
-                  name={"name"}
+                  name={"displayName"}
                   className={"bg-transparent outline-none text-4xl border-none"}
                 />
                 <Image
@@ -50,7 +58,7 @@ function ProfileForm(props) {
               </Grid>
               <Grid item xs={12} md={6}>
                 <InputHandler
-                  name={"phone"}
+                  name={"phoneNumber"}
                   label={"Phone Number"}
                   placeholder={"Enter Your Phone Number"}
                 />

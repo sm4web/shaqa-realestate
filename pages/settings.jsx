@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Head from "next/head";
 import withAuth from "../hooks/withAuth";
+import { useSelector } from "react-redux";
 
 const options = [
   { label: "Profile", subtitle: "Name, Username, Email address" },
@@ -15,10 +16,10 @@ const options = [
   { label: "Notifications", subtitle: "Sha2a will send you notifications" },
 ];
 
-const renderSettingsSection = (setting) => {
+const renderSettingsSection = (setting, user) => {
   switch (setting) {
     case "profile":
-      return <SettingsProfile />;
+      return <SettingsProfile userData={user} />;
 
     default:
       break;
@@ -26,6 +27,8 @@ const renderSettingsSection = (setting) => {
 };
 
 function Settings(props) {
+  const { user } = useSelector((state) => state.auth.data);
+
   const router = useRouter();
   const { setting } = router.query;
   return (
@@ -81,7 +84,7 @@ function Settings(props) {
           ))}
         </div>
       </div>
-      {renderSettingsSection(setting)}
+      {renderSettingsSection(setting, user)}
     </div>
   );
 }
