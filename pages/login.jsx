@@ -1,24 +1,32 @@
+import React from "react";
 import Head from "next/head";
 import Image from "next/image";
-import React from "react";
-import SideImage from "../assets/images/signin-side.svg";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import InputHandler from "../components/General/InputHandler";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { userRegisterationSchema } from "../validationSchemas";
-import { useDispatch, useSelector } from "react-redux";
-import { userGoogleAuth } from "../features/auth/authSlice";
 import SimpleSnackbar from "../components/General/Snackbar";
 import GoogleAuthButton from "../components/General/GoogleAuthButton";
+import { userRegisterationSchema } from "../validationSchemas";
+import SideImage from "../assets/images/signin-side.svg";
+
+// Reducers
+import { loginWithEmailAndPassword } from "../features/login/loginSlice";
+import { userGoogleAuth } from "../features/googleAuth/googleAuthSlice";
 
 const login = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { error } = useSelector((state) => state.auth.data);
+  const { error: normalError } = useSelector((state) => state.login);
+  const { error: googleAuthError } = useSelector((state) => state.googleAuth);
 
   const handleGoogleAuth = () => {
     dispatch(userGoogleAuth(router));
+  };
+
+  const handleLogin = (values) => {
+    dispatch(loginWithEmailAndPassword({ ...values, router }));
   };
 
   return (
@@ -33,9 +41,9 @@ const login = () => {
         />
       </Head>
 
-      {error && (
+      {(normalError || googleAuthError) && (
         <SimpleSnackbar
-          text={error}
+          text={normalError || googleAuthError}
           error
           place={{
             vertical: "bottom",
@@ -54,7 +62,9 @@ const login = () => {
           <Formik
             initialValues={{ email: "", password: "" }}
             validationSchema={userRegisterationSchema}
-            onSubmit={handleGoogleAuth}
+            onSubmit={(values) => {
+              handleLogin(values);
+            }}
           >
             {(props) => (
               <Form className="min-w-full md:min-w-[500px]">

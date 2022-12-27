@@ -8,17 +8,33 @@ import { Formik, Form } from "formik";
 import Link from "next/link";
 import { userRegisterationSchema } from "../validationSchemas";
 import { useRouter } from "next/router";
+import { userGoogleAuth } from "../features/googleAuth/googleAuthSlice";
+import { registerWithEmailAndPassword } from "../features/register/registerSlice";
+import GoogleAuthButton from "../components/General/GoogleAuthButton";
+import { useDispatch, useSelector } from "react-redux";
+import SimpleSnackbar from "../components/General/Snackbar";
 
 const register = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const { error: normalError } = useSelector((state) => state.register);
+  const { error: googleAuthError } = useSelector((state) => state.googleAuth);
 
-  const handleNextStep = () => {
-    router.push({
-      pathname: "/profile-setup",
-      query: {
-        step: 2,
-      },
-    });
+  const handleGoogleAuth = () => {
+    dispatch(
+      userGoogleAuth(() => {
+        router.push({
+          pathname: "profile-setup",
+          query: {
+            step: 2,
+          },
+        });
+      })
+    );
+  };
+
+  const handleRegister = (values) => {
+    dispatch(registerWithEmailAndPassword({ ...values, router }));
   };
 
   return (
@@ -32,7 +48,16 @@ const register = () => {
           key="Signup-Page"
         />
       </Head>
-
+      {(normalError || googleAuthError) && (
+        <SimpleSnackbar
+          text={normalError || googleAuthError}
+          error
+          place={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        />
+      )}
       <div className="h-full flex items-center justify-center p-[5%] md:p-0">
         <main className="w-screen h-full flex items-center justify-evenly">
           <Image
@@ -44,7 +69,7 @@ const register = () => {
             validationSchema={userRegisterationSchema}
             // Handle Submit
             onSubmit={(values) => {
-              handleNextStep();
+              handleRegister(values);
             }}
           >
             {(props) => (
@@ -78,6 +103,8 @@ const register = () => {
                 >
                   Sign up
                 </button>
+                <h1 className="text-center my-4 text-main">OR</h1>
+                <GoogleAuthButton handleClick={handleGoogleAuth} />
                 <h1 className="text-center mt-4">
                   Already have an account?{" "}
                   <Link href={"/login"} className={"mainColor"}>

@@ -5,7 +5,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu2 as MenuIcon } from "tabler-icons-react";
 import { toggleDrawer } from "../../features/drawer/drawerSlice";
-import { Avatar } from "@mantine/core";
 import { images } from "../../constants";
 
 const Links = [
@@ -33,9 +32,9 @@ const NonAuthNav = ({ light }) => {
       </div>
       <div>
         <Image
-          src={photoURL}
+          src={(photoURL ??= images.logo)}
           className={
-            "cursor-pointer border-2 border-white object-cover w-[72px] h-[72px] rounded-full"
+            "cursor-pointer border-2 border-white object-contain p-1 w-[72px] h-[72px] rounded-full"
           }
           alt={"profile"}
           width={60}

@@ -4,16 +4,21 @@ import React, { useState } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import UploadPicture from "./UploadPicture";
 import InputHandler from "../General/InputHandler";
+import { updateUserData } from "../../features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import uploadProfilePic from "../../utils/uploadProfilePictureToFirebase";
 
-const initValues = { profile_photo: "", phone_number: "" };
+const initValues = { profile_photo: null, phone_number: "" };
 
 const PersonalInfoForm = () => {
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
-  // const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  const onNextStep = (values) => {
+  const { uid } = useSelector((state) => state.auth.data.user);
+
+  const handleRedirect = () => {
     router.push({
       pathname: "/profile-setup",
       query: {
@@ -27,14 +32,14 @@ const PersonalInfoForm = () => {
       <div className="w-full md:w-[500px]">
         <Formik
           initialValues={initValues}
-          onSubmit={(values) => {
-            onNextStep(values);
+          onSubmit={async (values) => {
+            // uploadProfilePic(values.profile_photo, uid); // isolate to upload images module -frontend
+            dispatch(updateUserData({ data: values, uid }));
           }}
         >
           {({ values }) => (
             <Form className="flex flex-col gap-[24px] w-full">
               <UploadPicture name={"profile_photo"} />
-
               <InputHandler
                 type="tel"
                 label={"Phone Number"}

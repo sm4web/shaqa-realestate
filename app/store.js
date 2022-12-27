@@ -14,10 +14,16 @@ import {
 } from "redux-persist";
 
 import storage from "redux-persist/lib/storage";
+import loginSlice from "../features/login/loginSlice";
+import googleAuthSlice from "../features/googleAuth/googleAuthSlice";
+import registerSlice from "../features/register/registerSlice";
 
 const rootReducer = combineReducers({
   auth: authSlice,
   drawer: drawerSlice,
+  login: loginSlice,
+  googleAuth: googleAuthSlice,
+  register: registerSlice,
 });
 
 const persistConfig = {

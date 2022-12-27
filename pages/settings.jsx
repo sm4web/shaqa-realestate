@@ -30,7 +30,9 @@ function Settings(props) {
   const { user } = useSelector((state) => state.auth.data);
 
   const router = useRouter();
+
   const { setting } = router.query;
+
   return (
     <div className="flex flex-col md:flex-row p-4">
       <Head>
