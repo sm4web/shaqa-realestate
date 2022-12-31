@@ -7,7 +7,7 @@ import { auth, db } from "./firebase";
 export default function handler(req, res) {
   const { email, password, fullName } = req.body;
   createUserWithEmailAndPassword(auth, email, password)
-    .then(({ user: { uid, accessToken, phoneNumber, photoURL, email } }) => {
+    .then(({ user: { uid, accessToken, email } }) => {
       // creating user column in the database.
       setDoc(doc(db, "users", uid), {
         uid,
@@ -15,25 +15,18 @@ export default function handler(req, res) {
         email,
       })
         .then((result) => {
-          // send results to the client after setting user column.
           res.status(201).send({
-            user: {
-              uid,
-              phoneNumber,
-              displayName: fullName,
-              photoURL,
-              email,
-            },
+            user: { uid, displayName: fullName, email },
             token: accessToken,
           });
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          res.status(400).send({
+            error: "Something went wrong while setting user's data!!",
+          });
         });
     })
     .catch((error) => {
-      res
-        .status(400)
-        .send({ error: "Something went wrong while creating user!!" });
+      res.status(400).send(error.code);
     });
 }

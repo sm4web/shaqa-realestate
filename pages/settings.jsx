@@ -10,6 +10,8 @@ import Head from "next/head";
 import withAuth from "../hooks/withAuth";
 import { useSelector } from "react-redux";
 
+import sha2a from "../app/api/sha2a";
+
 const options = [
   { label: "Profile", subtitle: "Name, Username, Email address" },
   { label: "Password", subtitle: "Your email address is horeyatm@gmail.com" },

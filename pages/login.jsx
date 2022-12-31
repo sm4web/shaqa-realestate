@@ -95,8 +95,8 @@ const login = () => {
                 >
                   Sign in
                 </button>
-                <h1 className="text-center my-4 text-main">OR</h1>
-                <GoogleAuthButton handleClick={handleGoogleAuth} />
+                {/* <h1 className="text-center my-4 text-main">OR</h1>
+                <GoogleAuthButton handleClick={handleGoogleAuth} /> */}
                 <h1 className="text-center mt-4">
                   Don't have an account?{" "}
                   <Link href={"/register"} className={"mainColor"}>

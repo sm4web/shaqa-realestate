@@ -137,7 +137,7 @@ const UserTypeForm = () => {
             <button
               onClick={() =>
                 router.push({
-                  pathname: "/",
+                  pathname: "/login",
                 })
               }
               className={"mainBTN"}

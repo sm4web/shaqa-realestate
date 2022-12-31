@@ -11,23 +11,18 @@ import Image from "next/image";
 function ProfileForm({ userData }) {
   const dispatch = useDispatch();
 
-  const [country, setCountry] = useState("");
-  const [govern, setGovern] = useState("");
-
-  //   const onSubmit = (data) => {
-  //     dispatch(updateProfile({ id: profile_id, setData, data }));
-  //   };
-
   if (!userData) return null;
 
-  const { displayName, email, photoURL } = userData;
+  const { city, country: state } = userData;
+
+  const [country, setCountry] = useState(state || "");
+  const [govern, setGovern] = useState(city || "");
+
   return (
     <div className="w-full p-2">
       <Formik
         initialValues={{
-          displayName,
-          photoURL,
-          email,
+          ...userData,
         }}
         onSubmit={(val) => console.log(val)}
       >
@@ -35,7 +30,10 @@ function ProfileForm({ userData }) {
           <Form style={{ height: "100%" }}>
             <div className="flex items-start lg:items-center justify-start gap-[20px] flex-col lg:flex-row">
               <div className="min-w-[200px]">
-                <UploadPicture name={"photoURL"} />
+                <UploadPicture
+                  url={userData?.profile_photo}
+                  name={"profile_photo"}
+                />
               </div>
               <div className="flex w-full items-center max-w-[600px] relative">
                 <InputHandler

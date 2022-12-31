@@ -14,7 +14,7 @@ const Links = [
   { name: "Contact Us", href: "/landing/#contact" },
 ];
 
-const NonAuthNav = ({ light }) => {
+const NonAuthNav = ({ light, userData }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth.data);
@@ -34,7 +34,7 @@ const NonAuthNav = ({ light }) => {
         <Image
           src={(photoURL ??= images.logo)}
           className={
-            "cursor-pointer border-2 border-white object-contain p-1 w-[72px] h-[72px] rounded-full"
+            "cursor-pointer border-2 border-white object-cover p-1/2 w-[72px] h-[72px] rounded-full"
           }
           alt={"profile"}
           width={60}
@@ -126,7 +126,11 @@ const NonAuthNav = ({ light }) => {
           alt={"Shaqa Realestate logo"}
         />
       </div>
-      {user ? <AuthedSection photoURL={user?.photoURL} /> : <NonAuthSection />}
+      {user ? (
+        <AuthedSection photoURL={user?.profile_photo} />
+      ) : (
+        <NonAuthSection />
+      )}
     </div>
   );
 };

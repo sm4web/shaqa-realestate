@@ -1,5 +1,4 @@
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { updateUserData } from "../features/user/userSlice";
 import { storage } from "../pages/api/firebase";
 
 const uploadProfilePic = async (file, uid) => {

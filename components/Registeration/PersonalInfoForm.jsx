@@ -6,9 +6,8 @@ import UploadPicture from "./UploadPicture";
 import InputHandler from "../General/InputHandler";
 import { updateUserData } from "../../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import uploadProfilePic from "../../utils/uploadProfilePictureToFirebase";
 
-const initValues = { profile_photo: null, phone_number: "" };
+const initValues = { phoneNumber: "" };
 
 const PersonalInfoForm = () => {
   const [country, setCountry] = useState("");
@@ -33,17 +32,17 @@ const PersonalInfoForm = () => {
         <Formik
           initialValues={initValues}
           onSubmit={async (values) => {
-            // uploadProfilePic(values.profile_photo, uid); // isolate to upload images module -frontend
             dispatch(updateUserData({ data: values, uid }));
+            handleRedirect();
           }}
         >
           {({ values }) => (
             <Form className="flex flex-col gap-[24px] w-full">
-              <UploadPicture name={"profile_photo"} />
+              <UploadPicture />
               <InputHandler
                 type="tel"
                 label={"Phone Number"}
-                name={"phone_number"}
+                name={"phoneNumber"}
                 placeholder={"Phone Number"}
               />
               <div>

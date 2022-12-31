@@ -1,29 +1,31 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import UploadPic from "../../assets/icons/upload-profile-picture.png";
-import { useFormikContext } from "formik";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import uploadProfilePic from "../../utils/uploadProfilePictureToFirebase";
 
-const UploadPicture = ({ name }) => {
-  const formikProps = useFormikContext();
+const UploadPicture = ({ url }) => {
+  const [image, setImage] = useState(url || null);
   const ref = useRef();
-  const formValue = formikProps.values[name];
+  const { uid } = useSelector((state) => state.auth.data.user);
 
   const handleChange = () => {
     ref.current.click();
   };
 
   const handleImageLocally = (e) => {
-    formikProps.setFieldValue(name, e.target.files[0]);
+    setImage(e.target.files[0]);
+    uploadProfilePic(e.target.files[0], uid);
   };
 
   const handleRemoveImageLocally = () => {
-    formikProps.setFieldValue(name, null);
+    setImage(null);
   };
 
   return (
     <div
       className="text-center animate hover:fade cursor-pointer mb-4"
-      onClick={formValue ? handleRemoveImageLocally : handleChange}
+      onClick={image ? handleRemoveImageLocally : handleChange}
     >
       <input
         type="file"
@@ -36,19 +38,17 @@ const UploadPicture = ({ name }) => {
         width={160}
         height={160}
         src={
-          typeof formValue === "string"
-            ? formValue
-            : formValue
-            ? URL.createObjectURL(
-                new Blob([formValue], { type: "image/png+xml" })
-              )
+          typeof image === "string"
+            ? image
+            : image
+            ? URL.createObjectURL(new Blob([image], { type: "image/png+xml" }))
             : UploadPic
         }
         className={"w-[160px] h-[160px] m-auto rounded-full object-cover"}
         alt="User profile"
       />
       <h1 className="text-sm mainColor">
-        {formValue ? "Remove profile picture" : "Upload profile picture"}
+        {image ? "Remove profile picture" : "Upload profile picture"}
       </h1>
     </div>
   );

@@ -103,8 +103,8 @@ const register = () => {
                 >
                   Sign up
                 </button>
-                <h1 className="text-center my-4 text-main">OR</h1>
-                <GoogleAuthButton handleClick={handleGoogleAuth} />
+                {/* <h1 className="text-center my-4 text-main">OR</h1>
+                <GoogleAuthButton handleClick={handleGoogleAuth} /> */}
                 <h1 className="text-center mt-4">
                   Already have an account?{" "}
                   <Link href={"/login"} className={"mainColor"}>

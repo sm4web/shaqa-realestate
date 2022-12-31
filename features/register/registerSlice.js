@@ -29,7 +29,14 @@ export const registerWithEmailAndPassword = createAsyncThunk(
 
       return null;
     } catch (error) {
-      return error.message;
+      console.log(error);
+      const errorMessage = error.response.data;
+
+      if (errorMessage === "auth/email-already-in-use") {
+        return "This email is already in use.";
+      } else {
+        return errorMessage;
+      }
     }
   }
 );

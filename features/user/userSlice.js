@@ -5,27 +5,16 @@ const initialState = {
   error: null,
 };
 
-export const updateUserData = createAsyncThunk(
-  "auth/user",
-  async (values, thunkAPI) => {
-    const { data, uid } = values;
+export const updateUserData = createAsyncThunk("auth/user", async (values) => {
+  const { data, uid } = values;
 
-    try {
-      const result = await sha2a.post("/update-user", { data, uid });
-
-      router.push({
-        pathname: "/profile-setup",
-        query: {
-          step: 3,
-        },
-      });
-
-      return null;
-    } catch (error) {
-      return error.message;
-    }
+  try {
+    const result = await sha2a.post("/update-user", { data, uid });
+    return null;
+  } catch (error) {
+    return error.message;
   }
-);
+});
 
 export const userSlice = createSlice({
   name: "user",
