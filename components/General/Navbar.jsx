@@ -14,7 +14,7 @@ const Links = [
   { name: "Contact Us", href: "/landing/#contact" },
 ];
 
-const NonAuthNav = ({ light, userData }) => {
+const NonAuthNav = ({ light }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth.data);
@@ -32,11 +32,13 @@ const NonAuthNav = ({ light, userData }) => {
       </div>
       <div>
         <Image
-          src={(photoURL ??= images.logo)}
+          src={(photoURL ??= images.userPlaceholder)}
           className={
             "cursor-pointer border-2 border-white object-cover p-1/2 w-[72px] h-[72px] rounded-full"
           }
-          alt={"profile"}
+          alt={
+            "User Avatar Png - User Avatar Icon Png, Transparent Png@shaqa-realestate.com"
+          }
           width={60}
           height={60}
           onClick={() => {
@@ -126,11 +128,7 @@ const NonAuthNav = ({ light, userData }) => {
           alt={"Shaqa Realestate logo"}
         />
       </div>
-      {user ? (
-        <AuthedSection photoURL={user?.profile_photo} />
-      ) : (
-        <NonAuthSection />
-      )}
+      {user ? <AuthedSection photoURL={user?.profile_photo} /> : <NonAuthSection />}
     </div>
   );
 };

@@ -34,6 +34,7 @@
     "scss": "^0.2.4",
     "tabler-icons-react": "^1.56.0",
     "use-places-autocomplete": "^4.0.0",
+    "uuidv4": "^6.2.13",
     "yup": "^0.32.11"
   },
   "devDependencies": {

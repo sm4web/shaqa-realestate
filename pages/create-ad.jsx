@@ -72,7 +72,7 @@ const CreateAd = () => {
 const RightForm = () => (
   <div className="flex flex-1 w-full flex-col gap-[24px]">
     <GoogleMaps form_name={"location"} withSearchBar />
-    <UploadImages name={"images"} />
+    <UploadImages />
   </div>
 );
 

@@ -19,11 +19,13 @@ import OTPIcon from "../assets/icons/security.png";
 import settingsArrowRight from "../assets/icons/settings-menu-arrow-right.png";
 import settingsArrowLeft from "../assets/icons/settings-menu-arrow-left.png";
 import editIcon from "../assets/icons/edit-icon.png";
+import userPlaceholder from "../assets/images/man.png";
 
 export default {
   signinHero,
   signupHero,
   chatIconNew,
+  userPlaceholder,
   editIcon,
   UploadImagesIcon,
   chatIcon,
