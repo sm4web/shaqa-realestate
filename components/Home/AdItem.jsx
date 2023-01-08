@@ -6,13 +6,28 @@ import { useRouter } from "next/router";
 import Aminities from "../General/Aminities";
 import LikeAndShare from "../General/LikeAndShare";
 
-const AdCard = ({ title, address, price, aminities }) => {
+import KingBedIcon from "@mui/icons-material/KingBed";
+import BathtubIcon from "@mui/icons-material/Bathtub";
+import StraightenIcon from "@mui/icons-material/Straighten";
+import convertPriceToCurrency from "../../utils/convertPriceToCurrency";
+
+const AdCard = ({
+  title,
+  address,
+  price,
+  id,
+  uid,
+  rooms,
+  space,
+  bathrooms = 1,
+}) => {
   const router = useRouter();
   return (
     <div
       onClick={() =>
         router.push({
-          pathname: "/advertisement/1",
+          pathname: `/advertisement/${id}`,
+          query: { uid },
         })
       }
       className="cursor-pointer shadow-main/5 hover:shadow-main/30 animate duration-150 ease-in-out w-full p-[12px] md:p-[18px] min-h-fit rounded-xl shadow-xl drop-shadow-lg border border-gray-100"
@@ -24,30 +39,36 @@ const AdCard = ({ title, address, price, aminities }) => {
         width={"100%"}
         className={"w-full max-h-[300px] object-cover rounded-lg"}
       />
-      <CardPrice />
-      <CardTitle />
-      <CardAddress />
-      <Aminities />
+      <CardPrice price={price} />
+      <CardTitle title={title} />
+      <CardAddress address={address} />
+      <Aminities
+        data={[
+          { title: "Bedroom", value: rooms, Icon: KingBedIcon },
+          { title: "Bathroom", value: bathrooms, Icon: BathtubIcon },
+          { title: "m²", value: space, Icon: StraightenIcon },
+        ]}
+      />
     </div>
   );
 };
 
 const CardAddress = ({ address }) => (
   <h1 className="mt-2 text-gray-500 font-medium text-[14px] md:text-[16px]">
-    329 Ambarukmo St, Brooklyn, NY
+    {address}
   </h1>
 );
 
 const CardTitle = ({ title }) => (
   <h1 className="mt-4 text-secondary font-bold text-[16px] md:text-[20px]">
-    New vintage apartment on the Green Avenue
+    {title}
   </h1>
 );
 
-const CardPrice = ({ price, currency }) => (
+const CardPrice = ({ price }) => (
   <div className="flex items-center justify-between mt-[24px]">
     <h1 className="mainColor font-bold text-[18px] lg:text-[18px] xl:text-[24px]">
-      250,000 L.E
+      {convertPriceToCurrency(price)}
     </h1>
     <LikeAndShare />
   </div>

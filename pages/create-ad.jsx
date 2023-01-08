@@ -2,6 +2,8 @@ import { Form, Formik } from "formik";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import sha2a from "../app/api/sha2a";
 import GoogleMaps from "../components/General/GoogleMaps";
 import InputHandler from "../components/General/InputHandler";
 import UploadImages from "../components/General/uploadAdImages";
@@ -15,11 +17,16 @@ const AdTypes = [
 
 const CreateAd = () => {
   const router = useRouter();
-
-  const handleCancel = () =>
+  const { uid } = useSelector((state) => state.auth.data.user);
+  const redirectToHome = () =>
     router.push({
       pathname: "/",
     });
+
+  const handleCreateAd = async (data) => {
+    const result = await sha2a.post("/create-ad", { uid, data });
+    redirectToHome();
+  };
 
   return (
     <div className="w-full container py-4">
@@ -40,7 +47,7 @@ const CreateAd = () => {
           description: "",
         }}
         onSubmit={(values) => {
-          alert(JSON.stringify(values));
+          handleCreateAd(values);
         }}
       >
         {(props) => (
@@ -52,7 +59,7 @@ const CreateAd = () => {
             </div>
             <div className="flex items-center flex-col lg:flex-row w-full gap-[24px] mt-6">
               <button
-                onClick={handleCancel}
+                onClick={redirectToHome}
                 type="button"
                 className="mainBTN border-2 border-main text-main bg-white w-full"
               >

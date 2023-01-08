@@ -28,10 +28,12 @@ const GoogleMaps = ({ form_name, lng, lat, withSearchBar }) => {
     lng: lng || 31.2357,
     lat: lat || 30.0444,
   });
+  const [address, setAddress] = useState("");
 
   useEffect(() => {
     formikProps?.setFieldValue(form_name, location);
-  }, [location]);
+    formikProps?.setFieldValue("address", address);
+  }, [location, address]);
 
   if (loadError) {
     return <div>Map cannot be loaded right now, sorry.</div>;
@@ -42,7 +44,10 @@ const GoogleMaps = ({ form_name, lng, lat, withSearchBar }) => {
       {withSearchBar && !lat && (
         <>
           <h1 className="text-lg font-bold">Address</h1>
-          <PlacesAutoComplete setLocation={setLocation} />
+          <PlacesAutoComplete
+            setLocation={setLocation}
+            setAddress={setAddress}
+          />
         </>
       )}
       <GoogleMap
@@ -64,7 +69,7 @@ const GoogleMaps = ({ form_name, lng, lat, withSearchBar }) => {
   );
 };
 
-const PlacesAutoComplete = ({ setLocation }) => {
+const PlacesAutoComplete = ({ setLocation, setAddress }) => {
   const {
     ready,
     value,
@@ -78,6 +83,7 @@ const PlacesAutoComplete = ({ setLocation }) => {
     clearSuggestions();
     const results = await getGeocode({ address });
     const { lat, lng } = await getLatLng(results[0]);
+    setAddress(address);
     setLocation({ lat, lng });
   };
 
