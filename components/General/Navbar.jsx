@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Menu2 as MenuIcon } from "tabler-icons-react";
 import { toggleDrawer } from "../../features/drawer/drawerSlice";
 import { images } from "../../constants";
+import { getUserData } from "../../pages/api/fetch-user";
 
 const Links = [
   { name: "Home", href: "/landing" },
@@ -34,7 +35,7 @@ const NonAuthNav = ({ light }) => {
         <Image
           src={(photoURL ??= images.userPlaceholder)}
           className={
-            "cursor-pointer border-2 border-white object-cover p-1/2 w-[72px] h-[72px] rounded-full"
+            "cursor-pointer border-2 border-white object-cover w-[56px] h-[56px] rounded-full"
           }
           alt={
             "User Avatar Png - User Avatar Icon Png, Transparent Png@shaqa-realestate.com"
@@ -46,6 +47,7 @@ const NonAuthNav = ({ light }) => {
               pathname: "/settings",
               query: {
                 setting: "profile",
+                uid: user.uid,
               },
             });
           }}
@@ -128,9 +130,20 @@ const NonAuthNav = ({ light }) => {
           alt={"Shaqa Realestate logo"}
         />
       </div>
-      {user ? <AuthedSection photoURL={user?.profile_photo} /> : <NonAuthSection />}
+      {user ? (
+        <AuthedSection photoURL={user.profile_photo} />
+      ) : (
+        <NonAuthSection />
+      )}
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  const data = await getUserData();
+  return {
+    props: { data }, // will be passed to the page component as props
+  };
+}
 
 export default NonAuthNav;

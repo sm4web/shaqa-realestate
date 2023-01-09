@@ -8,9 +8,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import Head from "next/head";
 import withAuth from "../hooks/withAuth";
-import { useSelector } from "react-redux";
 
-import sha2a from "../app/api/sha2a";
+import { getUserData } from "./api/fetch-user";
 
 const options = [
   { label: "Profile", subtitle: "Name, Username, Email address" },
@@ -28,11 +27,9 @@ const renderSettingsSection = (setting, user) => {
   }
 };
 
-function Settings(props) {
-  const { user } = useSelector((state) => state.auth.data);
-
+function Settings({ user }) {
   const router = useRouter();
-
+  console.log(user);
   const { setting } = router.query;
 
   return (
@@ -105,5 +102,12 @@ export const SettingsDrawer_MenuItem_Left = {
     color: "rgba(0,0,34,0.5)",
   },
 };
+
+export async function getServerSideProps(context) {
+  const user = await getUserData(context.query.uid);
+  return {
+    props: { user }, // will be passed to the page component as props
+  };
+}
 
 export default withAuth(Settings);

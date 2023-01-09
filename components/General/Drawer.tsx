@@ -82,13 +82,6 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
   );
 }
 
-const mockdata = [
-  { icon: Home2, label: "Home", href: "/" },
-  { icon: Heart, label: "Favorites", href: "/favorites" },
-  { icon: Ad, label: "My Ads", href: "/my-ads" },
-  { icon: Settings, label: "Settings", href: "/settings", q: "profile" },
-];
-
 const SideNav = () => {
   const [active, setActive] = useState(0);
   const theme = useMantineTheme();
@@ -96,7 +89,19 @@ const SideNav = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const opened = useSelector((state: any) => state.drawer.opened);
+  const { user } = useSelector((state: any) => state.auth.data);
 
+  const mockdata = [
+    { icon: Home2, label: "Home", href: "/", q: {} },
+    { icon: Heart, label: "Favorites", href: "/favorites", q: {} },
+    { icon: Ad, label: "My Ads", href: "/my-ads", q: { uid: user?.id } },
+    {
+      icon: Settings,
+      label: "Settings",
+      href: "/settings",
+      q: { setting: "profile", uid: user?.id },
+    },
+  ];
   const onSignOut = () => {
     dispatch(logout(0));
     dispatch(toggleDrawer(0));
@@ -109,11 +114,7 @@ const SideNav = () => {
         dispatch(toggleDrawer(0));
         router.push({
           pathname: link.href,
-          query: link.q
-            ? {
-                setting: link.q,
-              }
-            : {},
+          query: link.q,
         });
       }}
       display={"flex"}

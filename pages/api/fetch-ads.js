@@ -1,10 +1,12 @@
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, query, where } from "firebase/firestore";
 import { db } from "./firebase";
 
-export async function getAdsData() {
+export async function getAdsData(uid = false) {
   let data = [];
   const advertisementDocRef = collection(db, "advertisements");
-  const dataSnapshot = await getDocs(advertisementDocRef);
+  const q = query(advertisementDocRef, where("uid", "==", uid));
+
+  const dataSnapshot = await getDocs(uid ? q : advertisementDocRef);
   dataSnapshot.forEach((doc) => {
     data = [...data, { ...doc.data(), id: doc.id }];
   });

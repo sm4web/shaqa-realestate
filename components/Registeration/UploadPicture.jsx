@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import uploadProfilePic from "../../utils/uploadProfilePictureToFirebase";
 
-const UploadPicture = ({ url }) => {
+const UploadPicture = ({ url, setImageLoading }) => {
   const [image, setImage] = useState(url || null);
   const ref = useRef();
   const { uid } = useSelector((state) => state.auth.data.user);
@@ -13,9 +13,11 @@ const UploadPicture = ({ url }) => {
     ref.current.click();
   };
 
-  const handleImageLocally = (e) => {
+  const handleImageLocally = async (e) => {
+    setImageLoading(true);
     setImage(e.target.files[0]);
-    uploadProfilePic(e.target.files[0], uid);
+    await uploadProfilePic(e.target.files[0], uid);
+    setImageLoading(false);
   };
 
   const handleRemoveImageLocally = () => {

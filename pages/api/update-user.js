@@ -15,7 +15,10 @@ export default function handler(req, res) {
           // updating the photo_url field in database after getting it.
           updateDoc(userDoc, { ...data, profile_photo: url })
             .then(() => {
-              res.status(200).send({ message: "Data updated successfully!" });
+              res.status(200).send({
+                data: { ...data, profile_photo: url },
+                message: "Data updated successfully!",
+              });
             })
             .catch((err) => {
               res.status(400).send({ error: err.message });

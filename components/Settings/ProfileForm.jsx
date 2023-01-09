@@ -7,16 +7,23 @@ import { images } from "../../constants";
 import { useDispatch } from "react-redux";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import Image from "next/image";
+import SimpleSnackbar from "../General/Snackbar";
+import { updateUserData } from "../../features/user/userSlice";
+import loadingImage from "../../assets/images/Fading word.gif";
 
 function ProfileForm({ userData }) {
-  const dispatch = useDispatch();
-
   if (!userData) return null;
 
   const { city, country: state } = userData;
-
+  const dispatch = useDispatch();
   const [country, setCountry] = useState(state || "");
   const [govern, setGovern] = useState(city || "");
+  const [saved, setSaved] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
+
+  const handleUpdateUser = (data) => {
+    dispatch(updateUserData({ data, uid: userData.uid }));
+  };
 
   return (
     <div className="w-full p-2">
@@ -24,15 +31,26 @@ function ProfileForm({ userData }) {
         initialValues={{
           ...userData,
         }}
-        onSubmit={(val) => console.log(val)}
+        onSubmit={(values) => {
+          handleUpdateUser(values);
+          setSaved(true);
+        }}
       >
         {({ values }) => (
           <Form style={{ height: "100%" }}>
+            {/* Snackbar when user data updated... */}
+            {saved && (
+              <SimpleSnackbar text={"User data updated successfully."} />
+            )}
+            {/* Snackbar when profile photo uploaded to database... */}
+            {imageLoading && (
+              <SimpleSnackbar text={"Profile photo is being uploaded..."} />
+            )}
             <div className="flex items-start lg:items-center justify-start gap-[20px] flex-col lg:flex-row">
               <div className="min-w-[200px]">
                 <UploadPicture
                   url={userData?.profile_photo}
-                  name={"profile_photo"}
+                  setImageLoading={setImageLoading}
                 />
               </div>
               <div className="flex w-full items-center max-w-[600px] relative">
@@ -97,8 +115,16 @@ function ProfileForm({ userData }) {
                 <button className="mainBTN flex-1 border-2 border-red-500 text-red-500 bg-white">
                   Cancel
                 </button>
-                <button type="submit" className="mainBTN flex-1">
-                  Save
+                <button
+                  disabled={imageLoading}
+                  type="submit"
+                  className={
+                    imageLoading
+                      ? "mainBTN flex-1 bg-gray-500"
+                      : "mainBTN flex-1"
+                  }
+                >
+                  {imageLoading ? "Loading..." : "Save"}
                 </button>
               </ButtonGroup>
             </div>
