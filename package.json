@@ -32,6 +32,7 @@
     "redux-persist": "^6.0.0",
     "sass": "^1.56.2",
     "scss": "^0.2.4",
+    "swiper": "^8.4.6",
     "tabler-icons-react": "^1.56.0",
     "use-places-autocomplete": "^4.0.0",
     "uuidv4": "^6.2.13",

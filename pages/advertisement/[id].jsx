@@ -17,9 +17,19 @@ import BathtubIcon from "@mui/icons-material/Bathtub";
 import StraightenIcon from "@mui/icons-material/Straighten";
 import { getAdsData } from "../api/fetch-ads";
 import { getUserData } from "../api/fetch-user";
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Parallax } from "swiper";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 const Ad = (props) => {
   const { data: AdData, similarOffers, author } = props; // All the advertisement Data
-
+  console.log(AdData);
   return (
     <div className="w-full flex flex-col">
       <Head>
@@ -31,8 +41,10 @@ const Ad = (props) => {
           key="Advertisement-Page"
         />
       </Head>
-      <Header title={AdData.title} /> {/* Here you pass the Ad title/name */}
-      <UserDetails {...author} /> {/* Should pass the (image + userDetails) */}
+      <Header title={AdData.title} images={AdData.images} />{" "}
+      {/* Here you pass the Ad title/name */}
+      <UserDetails {...author} images={AdData.images} />{" "}
+      {/* Should pass the (image + userDetails) */}
       <PropertyDetails {...AdData} />
       {/* Should Pass property location, address, title and price */}
       <SimilarOffers data={similarOffers} />
@@ -41,12 +53,12 @@ const Ad = (props) => {
 };
 
 // Property Title + Demo Image
-const Header = ({ title }) => (
+const Header = ({ title, images }) => (
   <div className="w-full h-[320px] relative">
     <Image
       className="absolute top-0 z-1 left-0 w-full h-full object-cover"
       src={BannerImage}
-      alt={"Property Realestate"}
+      alt={"Advertisement Header"}
     />
     <div className="container z-9 relative h-full w-full flex flex-col items-start justify-center">
       <h1 className="text-white font-light text-md lg:text-[20px]">
@@ -63,7 +75,7 @@ const Header = ({ title }) => (
 );
 
 // UserDetails - Section
-const UserDetails = ({ displayName, phoneNumber, profile_photo }) => {
+const UserDetails = ({ displayName, phoneNumber, profile_photo, images }) => {
   const [copied, setCopied] = useState(false);
   const ref = useRef();
 
@@ -79,13 +91,36 @@ const UserDetails = ({ displayName, phoneNumber, profile_photo }) => {
   }
 
   const LeftImage = () => (
-    <div className="flex-1">
-      <Image
-        className="rounded-3xl border-lightmain border-2 h-full object-contain shadow-xl"
-        src={require("../../assets/images/demo-ad.png")}
-        alt={"A Property"}
-      />
-    </div>
+    <Swiper
+      className="flex-1 w-full"
+      style={{
+        // @ts-ignore
+        "--swiper-pagination-color": "#fff",
+        "--swiper-navigation-color": "#000",
+      }}
+      speed={600}
+      parallax={true}
+      pagination={{
+        clickable: true,
+      }}
+      navigation={true}
+      modules={[Parallax, Pagination, Navigation]}
+    >
+      {images?.map((img, idx) => (
+        <SwiperSlide
+          key={idx}
+          className="flex-1 min-w-[100%] max-h-[600px]"
+          slot="container-start"
+          data-swiper-parallax="-23%"
+        >
+          <img
+            className="w-full max-h-[600px] object-contain shadow-xl"
+            src={img}
+            alt={"A Property"}
+          />
+        </SwiperSlide>
+      ))}
+    </Swiper>
   );
 
   const UserProfilePicture = ({ image }) => (

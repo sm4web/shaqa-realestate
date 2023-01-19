@@ -16,7 +16,7 @@ const UploadPicture = ({ url, setImageLoading }) => {
   const handleImageLocally = async (e) => {
     setImageLoading(true);
     setImage(e.target.files[0]);
-    await uploadProfilePic(e.target.files[0], uid);
+    await uploadProfilePic(e.target.files[0], "profilePics", uid);
     setImageLoading(false);
   };
 

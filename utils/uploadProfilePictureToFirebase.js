@@ -1,8 +1,8 @@
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../pages/api/firebase";
 
-const uploadProfilePic = async (file, uid) => {
-  const storageRef = ref(storage, `profilePics/${uid}`);
+const uploadProfilePic = async (file, folderName, fileName) => {
+  const storageRef = ref(storage, `${folderName}/${fileName}`);
   const uploadTask = uploadBytesResumable(storageRef, file);
   return new Promise((resolve, reject) => {
     uploadTask.on(

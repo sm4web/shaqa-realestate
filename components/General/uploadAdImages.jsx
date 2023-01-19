@@ -13,11 +13,10 @@ const UploadImages = ({ name }) => {
     ref.current.click();
   };
 
-  const handleImageChange = (e) => {
-    console.log(e.target.files[0]);
+  const handleImageChange = async (e) => {
     formikProps.setFieldValue(name, [
       ...formikProps.values.images,
-      e.target.files[0],
+      ...e.target.files,
     ]);
   };
 
@@ -30,26 +29,28 @@ const UploadImages = ({ name }) => {
           src={images.UploadImagesIcon}
           width={48}
           height={48}
-          alt="Add Image Button"
+          alt="Upload Advertisement Photo"
         />
         <input
           onChange={handleImageChange}
           ref={ref}
           style={{ display: "none" }}
           type={"file"}
+          multiple
           accept={"image/*"}
         />
       </Box>
       <Box sx={UploadImages__ImagesContainer}>
         {formikProps.values.images?.map((img, index) => (
-          <img
-            key={index}
+          <Image
             className={
               "stockShadow animate duration-300 ease-in-out mainBorder"
             }
             src={URL.createObjectURL(img)}
             width={320}
-            alt=""
+            height={300}
+            alt="Advertisement Photo"
+            key={index}
           />
         ))}
       </Box>

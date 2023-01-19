@@ -3,11 +3,14 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { uuid } from "uuidv4";
 import sha2a from "../app/api/sha2a";
 import GoogleMaps from "../components/General/GoogleMaps";
 import InputHandler from "../components/General/InputHandler";
+import Loader from "../components/General/Loader";
 import UploadImages from "../components/General/uploadAdImages";
 import withAuth from "../hooks/withAuth";
+import uploadProfilePic from "../utils/uploadProfilePictureToFirebase";
 
 const AdTypes = [
   { title: "Sell your house", value: "sell" },
@@ -18,18 +21,33 @@ const AdTypes = [
 const CreateAd = () => {
   const router = useRouter();
   const { uid } = useSelector((state) => state.auth.data.user);
+  const [loading, setLoading] = useState(false);
+
   const redirectToHome = () =>
     router.push({
       pathname: "/",
     });
 
   const handleCreateAd = async (data) => {
-    const result = await sha2a.post("/create-ad", { uid, data });
+    setLoading(true);
+    const adImagesToUpload = data.images;
+    let urls = [];
+    for (let i = 0; i < adImagesToUpload.length; i++) {
+      const image = adImagesToUpload[i];
+      const imageURL = await uploadProfilePic(image, "AdsImages", uuid());
+      urls = [...urls, imageURL];
+    }
+    await sha2a.post("/create-ad", {
+      uid,
+      data: { ...data, images: urls },
+    });
+    setLoading(false);
     redirectToHome();
   };
 
   return (
     <div className="w-full container py-4">
+      <Loader active={loading} msg={"Uploading your images, pelase wait..."} />
       <Head>
         <title>Shaqa - Place an advertisement</title>
         <link rel="icon" href="/favicon.ico" />
@@ -79,7 +97,7 @@ const CreateAd = () => {
 const RightForm = () => (
   <div className="flex flex-1 w-full flex-col gap-[24px]">
     <GoogleMaps form_name={"location"} withSearchBar />
-    <UploadImages />
+    <UploadImages name="images" />
   </div>
 );
 
