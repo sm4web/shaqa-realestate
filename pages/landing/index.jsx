@@ -4,8 +4,9 @@ import AdList from "../../components/Home/AdList";
 import About from "../../components/Landing/About";
 import Hero from "../../components/Landing/Hero";
 import HowItWork from "../../components/Landing/HowItWork";
+import { getAdsData } from "../api/fetch-ads";
 
-const Landing = () => {
+const Landing = ({ data }) => {
   return (
     <div className="min-h-screen w-full mt-6">
       <Head>
@@ -24,7 +25,7 @@ const Landing = () => {
           Our Most <br />
           <span className="text-main">Popular Properties</span>
         </h1>
-        <AdList data={3} />
+        <AdList data={data} />
       </div>
       <HowItWork />
       <div className="container mt-[120px] lg:mt-[200px]">
@@ -32,10 +33,17 @@ const Landing = () => {
           Recent Added <br />
           <span className="text-main">New Properties</span>
         </h1>
-        <AdList data={6} />
+        <AdList data={data} />
       </div>
     </div>
   );
 };
+
+export async function getServerSideProps() {
+  const data = await getAdsData();
+  return {
+    props: { data }, // will be passed to the page component as props
+  };
+}
 
 export default Landing;

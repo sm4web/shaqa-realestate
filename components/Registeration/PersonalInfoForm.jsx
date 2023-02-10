@@ -6,12 +6,14 @@ import UploadPicture from "./UploadPicture";
 import InputHandler from "../General/InputHandler";
 import { updateUserData } from "../../features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../General/Loader";
 
 const initValues = { phoneNumber: "" };
 
 const PersonalInfoForm = () => {
   const [country, setCountry] = useState("");
   const [region, setRegion] = useState("");
+  const [imageLoading, setImageLoading] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -28,6 +30,10 @@ const PersonalInfoForm = () => {
 
   return (
     <div className="flex flex-col flex-1 md:flex-none items-center justify-center mt-4 md:mt-[60px] p-2">
+      <Loader
+        active={imageLoading}
+        msg={"Please wait, image is being uploaded"}
+      />
       <div className="w-full md:w-[500px]">
         <Formik
           initialValues={initValues}
@@ -38,7 +44,7 @@ const PersonalInfoForm = () => {
         >
           {({ values }) => (
             <Form className="flex flex-col gap-[24px] w-full">
-              <UploadPicture />
+              <UploadPicture setImageLoading={setImageLoading} />
               <InputHandler
                 type="tel"
                 label={"Phone Number"}

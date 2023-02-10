@@ -94,7 +94,7 @@ const SideNav = () => {
   const mockdata = [
     { icon: Home2, label: "Home", href: "/", q: {} },
     { icon: Heart, label: "Favorites", href: "/favorites", q: {} },
-    { icon: Ad, label: "My Ads", href: "/my-ads", q: { uid: user?.id } },
+    { icon: Ad, label: "My Ads", href: "/my-ads", q: { uid: user?.uid } },
     {
       icon: Settings,
       label: "Settings",

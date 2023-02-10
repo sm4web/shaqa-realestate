@@ -1,32 +1,25 @@
-import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik, useField } from "formik";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import SearchIcon from "../../assets/icons/search-field-icon.png";
-import LocationIcon from "../../assets/icons/location-icon.png";
 import PriceSlider from "../General/PriceSlider";
 
-const TextField = ({ icon, placeholder }) => {
-  const [term, setTerm] = useState("");
+const TextField = ({ icon, placeholder, ...props }) => {
+  const [field] = useField(props);
   return (
-    <div className="relative flex items-center min-w-full md:min-w-[30%]">
+    <div className="relative flex items-center w-full mr-2">
       <input
-        value={term}
-        onChange={(e) => setTerm(e.target.value)}
-        className="w-full pl-[32px] h-full outline-none text-lg font-semibold"
+        className="w-full pl-[48px] h-full outline-none text-lg font-semibold"
         placeholder={placeholder}
+        {...field}
+        {...props}
       />
       <Image
         className="absolute left-0"
         src={icon}
-        height={24}
+        height={32}
         alt="search icon"
-      />
-      <Image
-        className="absolute right-0"
-        src={require("../../assets/icons/clearIcon.png")}
-        height={24}
-        alt="clear icon"
-        onClick={() => setTerm("")}
       />
     </div>
   );
@@ -39,9 +32,11 @@ const SearchBar = () => {
       justify-between gap-6 md:gap-0
       rounded-md md:rounded-full shadow-xl mt-[50px] p-4 md:py-4 md:px-12 h-fit md:h-[100px] m-auto bg-white"
     >
-      <TextField placeholder={"Search apartment..."} icon={SearchIcon} />{" "}
-      <div className="hidden md:block h-[90%] w-[2px] mx-[60px] bg-main"></div>
-      <TextField placeholder={"Choose Location..."} icon={LocationIcon} />
+      <TextField
+        placeholder={"Search keywords..."}
+        icon={SearchIcon}
+        name="term"
+      />
       <button
         className="mainBTN w-full md:w-[250px] z-10 animate hover:fade rounded-md md:rounded-full"
         type="submit"
@@ -52,7 +47,14 @@ const SearchBar = () => {
   );
 };
 
-const FilterationArea = () => {
+const FilterationArea = ({
+  roomsCount,
+  apartmentType,
+  setRoomsCount,
+  setApartmentType,
+  priceRange,
+  setPriceRange,
+}) => {
   return (
     <div className="mt-[40px] w-full max-w-[85%] m-auto ">
       <div className="w-full grid grid-cols-2 md:grid-cols-3 items-center gap-[12px] md:gap-[24px]">
@@ -65,12 +67,14 @@ const FilterationArea = () => {
           </label>
           <select
             defaultValue={"0"}
+            value={apartmentType}
+            onChange={(e) => setApartmentType(e.target.value)}
             id="apartment-type"
             className="appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm h-[50px] rounded-lg focus:ring-main focus:border-main block w-full p-2.5 border-none shadow-xl placeholder-gray-400"
           >
             <option value={"0"}>Choose a type</option>
-            <option value="APT">Apartment</option>
-            <option value="VILLA">Villa</option>
+            <option value="apartment">Apartment</option>
+            <option value="villa">Villa</option>
           </select>
         </div>
 
@@ -83,19 +87,22 @@ const FilterationArea = () => {
           </label>
           <select
             id="apartment-type"
-            defaultValue={"0"}
+            defaultValue={0}
+            value={roomsCount}
+            onChange={(e) => {
+              setRoomsCount(e.target.value);
+            }}
             className="appearance-none bg-gray-50 border border-gray-300 text-gray-900 text-sm h-[50px] rounded-lg focus:ring-main focus:border-main block w-full p-2.5 border-none shadow-xl placeholder-gray-400"
           >
-            <option value={"0"}>Choose room number</option>
-            <option value="US">United States</option>
-            <option value="CA">Canada</option>
-            <option value="FR">France</option>
-            <option value="DE">Germany</option>
+            <option value={0}>Choose room number</option>
+            {[1, 2, 3].map((roomCount) => (
+              <option value={roomCount}>{roomCount}</option>
+            ))}
           </select>
         </div>
 
         <div className="col-span-2 md:col-span-1">
-          <PriceSlider />
+          <PriceSlider value={priceRange} setValue={setPriceRange} />
         </div>
       </div>
     </div>
@@ -103,6 +110,10 @@ const FilterationArea = () => {
 };
 
 const SearchSection = () => {
+  const [apartmentType, setApartmentType] = useState("apartment");
+  const [roomsCount, setRoomsCount] = useState(0);
+  const [priceRange, setPriceRange] = useState(0);
+  const router = useRouter();
   return (
     <section className="min-h-[240px] md:min-h-[370px] bg-lightmain relative p-4">
       <Image
@@ -114,13 +125,27 @@ const SearchSection = () => {
         <Formik
           initialValues={{ term: "" }}
           onSubmit={(values) => {
-            alert(JSON.stringify(values));
+            router.push({
+              query: {
+                term: values.term,
+                roomsCount,
+                apartmentType,
+                priceRange,
+              },
+            });
           }}
         >
           {() => (
-            <Form className="">
+            <Form>
               <SearchBar />
-              <FilterationArea />
+              <FilterationArea
+                roomsCount={roomsCount}
+                apartmentType={apartmentType}
+                setRoomsCount={setRoomsCount}
+                setApartmentType={setApartmentType}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+              />
             </Form>
           )}
         </Formik>

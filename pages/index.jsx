@@ -30,7 +30,14 @@ const Home = ({ data }) => {
 };
 
 export async function getServerSideProps(context) {
-  const data = await getAdsData();
+  const { term, priceRange, apartmentType, roomsCount } = context.query;
+  const data = await getAdsData(
+    false,
+    term,
+    priceRange,
+    apartmentType,
+    roomsCount
+  );
   return {
     props: { data }, // will be passed to the page component as props
   };

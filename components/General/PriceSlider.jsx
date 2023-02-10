@@ -23,13 +23,16 @@ const priceInputValue = {
   7: "EGP 2,000,000+",
 };
 
-const PriceSlider = (props) => {
+const PriceSlider = ({ setValue: setPriceRange }) => {
   const [value, setValue] = useState(0);
+
   const getPricingData = (obj, pos) => {
     return pos !== undefined ? obj[value][pos] : obj[value];
   };
+
   const handlePricingSlide = (e) => {
     setValue(e.target.value);
+    setPriceRange(priceInput[e.target.value].split(",").join(""));
   };
   return (
     <div className="flex flex-col w-full">
