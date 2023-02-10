@@ -9,6 +9,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import NonAuthNav from "../components/General/Navbar";
 import SideNav from "../components/General/Drawer";
 import Footer from "../components/General/Footer";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const progress = new ProgressBar({
   size: 5,
@@ -28,6 +30,7 @@ function MyApp({ Component, pageProps }) {
         <div className="flex flex-col min-h-screen h-screen">
           <NonAuthNav />
           <div className="flex-1 pb-12">
+            <ToastContainer position="bottom-center" autoClose={1500} />
             <Component {...pageProps} />
             <SideNav />
           </div>

@@ -29,7 +29,6 @@ const renderSettingsSection = (setting, user) => {
 
 function Settings({ user }) {
   const router = useRouter();
-  console.log(user);
   const { setting } = router.query;
 
   return (

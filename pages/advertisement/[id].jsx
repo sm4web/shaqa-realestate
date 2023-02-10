@@ -26,6 +26,7 @@ import { Navigation, Pagination, Parallax } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { toast } from "react-toastify";
 
 const Ad = (props) => {
   const { data: AdData, similarOffers, author } = props; // All the advertisement Data
@@ -76,18 +77,13 @@ const Header = ({ title, images }) => (
 
 // UserDetails - Section
 const UserDetails = ({ displayName, phoneNumber, profile_photo, images }) => {
-  const [copied, setCopied] = useState(false);
   const ref = useRef();
 
   function handleCopy() {
-    setCopied(true);
     var copyElement = ref?.current;
     const copyText = copyElement.innerText;
     navigator.clipboard.writeText(copyText);
-
-    setTimeout(() => {
-      setCopied(false);
-    }, 4000);
+    toast.dark("Phone number copied to clipboard");
   }
 
   const LeftImage = () => (
@@ -190,7 +186,6 @@ const UserDetails = ({ displayName, phoneNumber, profile_photo, images }) => {
           <UserContact phoneNumber={phoneNumber} />
         </div>
       </div>
-      {copied && <SimpleSnackbar text={"Copied to clipboard"} />}
     </>
   );
 };
