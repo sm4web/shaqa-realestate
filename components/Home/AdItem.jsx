@@ -20,6 +20,7 @@ const AdCard = ({
   rooms,
   space,
   bathrooms = 1,
+  images,
 }) => {
   const router = useRouter();
   return (
@@ -30,14 +31,14 @@ const AdCard = ({
           query: { uid },
         })
       }
-      className="cursor-pointer shadow-main/5 hover:shadow-main/30 animate duration-150 ease-in-out w-full p-[12px] md:p-[18px] min-h-fit rounded-xl shadow-xl drop-shadow-lg border border-gray-100"
+      className="mainBorder cursor-pointer shadow-main/5 hover:shadow-main/30 animate duration-150 ease-in-out w-full p-[12px] md:p-[18px] min-h-fit rounded-xl shadow-xl drop-shadow-lg"
     >
       <Image
         alt="Realestate Advertisement"
-        src={AdImage}
+        src={images[0]}
         height={600}
-        width={"100%"}
-        className={"w-full max-h-[300px] object-cover rounded-lg"}
+        width={600}
+        className={"w-full  max-h-[300px] object-cover rounded-lg"}
       />
       <CardPrice price={price} />
       <CardTitle title={title} />
