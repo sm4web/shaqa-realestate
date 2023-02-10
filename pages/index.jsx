@@ -7,6 +7,7 @@ import withAuth from "../hooks/withAuth";
 import { getAdsData } from "./api/fetch-ads";
 
 const Home = ({ data }) => {
+  console.log(data);
   return (
     <div className="flex flex-col">
       <Head>
