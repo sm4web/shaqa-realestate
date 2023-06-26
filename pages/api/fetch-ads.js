@@ -31,7 +31,7 @@ export async function getAdsData(
       const fetchedData = [...data, { ...doc.data(), id: doc.id }];
       data = fetchedData.filter(
         (ad) => ad.price <= priceRange && ad.rooms <= roomsCount
-      ); // term should be filtered as well
+      ); // I'm working on the search section ⚡️
     } else {
       data = [...data, { ...doc.data(), id: doc.id }];
     }
